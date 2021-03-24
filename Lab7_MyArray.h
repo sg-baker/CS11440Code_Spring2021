@@ -214,16 +214,9 @@ MyArray<T>& MyArray<T>::operator=(const MyArray& rhs) {
 // Serializable
 template <class T>
 void MyArray<T>::writeObject(ostream &os) {
-   char* buffer;
-   buffer = new char[4];
-   buffer = reinterpret_cast<char*>(&this->size);
-   os.write(buffer, sizeof(int));
-   buffer = reinterpret_cast<char*>(&this->capacity);
-   os.write(buffer, sizeof(int));
-   char* data_buffer;
-   data_buffer = new char[sizeof(T) * this->size];
-   data_buffer = reinterpret_cast<char*>(&this->data);
-   os.write(data_buffer, sizeof(T) * this->size);   
+   os.write(reinterpret_cast<char*>(&this->size), 4);
+   os.write(reinterpret_cast<char*>(&this->capacity), 4);
+   os.write(reinterpret_cast<char*>(this->data), (sizeof(T) * this->size));   
    return;
 }
 
